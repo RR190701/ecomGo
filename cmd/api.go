@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/RR190701/ecomGo/internal/products"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -31,6 +32,9 @@ func (app *application) Server() http.Handler {
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("healthy"))
 	})
+
+	listProducts := products.NewHandler(nil)
+	r.Get("/products", listProducts.ListProducts)
 	return r
 
 }
