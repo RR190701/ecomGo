@@ -23,7 +23,7 @@ func main() {
 	handler := api.Server()
 	if err := api.Start(handler); err != nil {
 		//log.Fatal(err)
-		slog.Error("Server failed to start", err)
+		slog.Error("Server failed to start", "error", err.Error())
 		os.Exit(1)
 	}
 

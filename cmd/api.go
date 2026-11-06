@@ -33,7 +33,8 @@ func (app *application) Server() http.Handler {
 		w.Write([]byte("healthy"))
 	})
 
-	listProducts := products.NewHandler(nil)
+	productService := products.NewService()
+	listProducts := products.NewHandler(productService)
 	r.Get("/products", listProducts.ListProducts)
 	return r
 
