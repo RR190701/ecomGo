@@ -39,6 +39,7 @@ func main() {
 
 	api := application{
 		config: appConfig,
+		db:     conn,
 	}
 
 	handler := api.Server()

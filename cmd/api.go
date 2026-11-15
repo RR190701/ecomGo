@@ -5,13 +5,16 @@ import (
 	"net/http"
 	"time"
 
+	repo "github.com/RR190701/ecomGo/internal/adapters/postgresql/sqlc"
 	"github.com/RR190701/ecomGo/internal/products"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/jackc/pgx/v5"
 )
 
 type application struct {
-	config
+	config config
+	db     *pgx.Conn
 }
 
 func (app *application) Server() http.Handler {
@@ -33,9 +36,10 @@ func (app *application) Server() http.Handler {
 		w.Write([]byte("healthy"))
 	})
 
-	productService := products.NewService()
+	productService := products.NewService(repo.New(app.db))
 	listProducts := products.NewHandler(productService)
 	r.Get("/products", listProducts.ListProducts)
+	r.Get("/product/{id}", listProducts.ListOneProduct)
 	return r
 
 }
