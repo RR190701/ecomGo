@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: shopgo-postgres
+    environment:
+      POSTGRES_USER: shopgo
+      POSTGRES_PASSWORD: shopgo
+      POSTGRES_DB: shopgo
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./internal/adapters/postgresql/migrations:/docker-entrypoint-initdb.d
