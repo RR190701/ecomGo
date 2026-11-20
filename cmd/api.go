@@ -6,6 +6,7 @@ import (
 	"time"
 
 	repo "github.com/RR190701/ecomGo/internal/adapters/postgresql/sqlc"
+	"github.com/RR190701/ecomGo/internal/orders"
 	"github.com/RR190701/ecomGo/internal/products"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -40,6 +41,10 @@ func (app *application) Server() http.Handler {
 	listProducts := products.NewHandler(productService)
 	r.Get("/products", listProducts.ListProducts)
 	r.Get("/product/{id}", listProducts.ListOneProduct)
+
+	orderHandler := orders.NewHandler(orders.NewService(repo.New(app.db), app.db))
+
+	r.Post("/orders", orderHandler.CreateOrder)
 	return r
 
 }
